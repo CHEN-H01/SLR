@@ -14,6 +14,9 @@
 		872444D32BA9C0450054A298 /* SLRTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 872444D22BA9C0450054A298 /* SLRTests.swift */; };
 		872444DD2BA9C0450054A298 /* SLRUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 872444DC2BA9C0450054A298 /* SLRUITests.swift */; };
 		872444DF2BA9C0450054A298 /* SLRUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 872444DE2BA9C0450054A298 /* SLRUITestsLaunchTests.swift */; };
+		87D2F3B32BB15CF2002D1A43 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D2F3B22BB15CF2002D1A43 /* CameraViewController.swift */; };
+		87D2F3B62BB15CF8002D1A43 /* CameraViewAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D2F3B42BB15CF8002D1A43 /* CameraViewAdapter.swift */; };
+		87D2F3B72BB15CF8002D1A43 /* VideoUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D2F3B52BB15CF8002D1A43 /* VideoUploader.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +47,9 @@
 		872444D82BA9C0450054A298 /* SLRUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SLRUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		872444DC2BA9C0450054A298 /* SLRUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLRUITests.swift; sourceTree = "<group>"; };
 		872444DE2BA9C0450054A298 /* SLRUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLRUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		87D2F3B22BB15CF2002D1A43 /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
+		87D2F3B42BB15CF8002D1A43 /* CameraViewAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewAdapter.swift; sourceTree = "<group>"; };
+		87D2F3B52BB15CF8002D1A43 /* VideoUploader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoUploader.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +100,9 @@
 		872444C02BA9C0430054A298 /* SLR */ = {
 			isa = PBXGroup;
 			children = (
+				87D2F3B22BB15CF2002D1A43 /* CameraViewController.swift */,
+				87D2F3B42BB15CF8002D1A43 /* CameraViewAdapter.swift */,
+				87D2F3B52BB15CF8002D1A43 /* VideoUploader.swift */,
 				872444C12BA9C0430054A298 /* SLRApp.swift */,
 				872444C32BA9C0430054A298 /* ContentView.swift */,
 				872444C52BA9C0440054A298 /* Assets.xcassets */,
@@ -259,6 +268,9 @@
 			files = (
 				872444C42BA9C0430054A298 /* ContentView.swift in Sources */,
 				872444C22BA9C0430054A298 /* SLRApp.swift in Sources */,
+				87D2F3B32BB15CF2002D1A43 /* CameraViewController.swift in Sources */,
+				87D2F3B62BB15CF8002D1A43 /* CameraViewAdapter.swift in Sources */,
+				87D2F3B72BB15CF8002D1A43 /* VideoUploader.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
