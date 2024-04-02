@@ -117,53 +117,48 @@ struct VideoPicker: UIViewControllerRepresentable {
             self.parent = parent
         }
         
-        func uploadVideoToServer(videoURL: URL) {
-            let uploadURL = URL(string: "http://169.254.38.232:8000/file_upload/upload/")!
-            
+        func uploadFileToServer(fileURL: URL, uploadURL: URL) {
             // 创建请求
             var request = URLRequest(url: uploadURL)
             request.httpMethod = "POST"
             
-            // 设置请求头，这里的boundary是请求分隔符，用于区分不同的数据部分
+            // 设置请求头
             let boundary = "Boundary-\(UUID().uuidString)"
             request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-
+            
             // 创建multipart请求体
             var body = Data()
             
-            // 添加视频数据
-            let videoData = try? Data(contentsOf: videoURL)
-            body.append("--\(boundary)\r\n".data(using: .utf8)!)
-            body.append("Content-Disposition: form-data; name=\"video\"; filename=\"\(videoURL.lastPathComponent)\"\r\n".data(using: .utf8)!)
-            body.append("Content-Type: video/mp4\r\n\r\n".data(using: .utf8)!)
-            if let videoData = videoData {
-                body.append(videoData)
+            // 添加文件数据
+            if let fileData = try? Data(contentsOf: fileURL) {
+                body.append("--\(boundary)\r\n".data(using: .utf8)!)
+                body.append("Content-Disposition: form-data; name=\"file\"; filename=\"\(fileURL.lastPathComponent)\"\r\n".data(using: .utf8)!)
+                body.append("Content-Type: application/octet-stream\r\n\r\n".data(using: .utf8)!)
+                body.append(fileData)
                 body.append("\r\n".data(using: .utf8)!)
             }
             
-            // 添加请求结束标记
+            // 结束标记
             body.append("--\(boundary)--\r\n".data(using: .utf8)!)
             
             // 设置请求体
             request.httpBody = body
             
-            // 使用URLSession上传任务上传文件
-            let task = URLSession.shared.uploadTask(with: request, fromFile: videoURL, completionHandler: { data, response, error in
-                // 处理上传完成后的逻辑，例如错误处理、解析服务器响应等
+            // 使用URLSession发起请求
+            let session = URLSession.shared
+            let task = session.dataTask(with: request) { data, response, error in
                 if let error = error {
-                    print("Upload error: \(error.localizedDescription)")
+                    print("Upload failed: \(error.localizedDescription)")
                     return
                 }
-
+                
                 if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
-                    // 成功上传
-                    print("Video successfully uploaded.")
+                    print("File uploaded successfully")
                 } else {
-                    // 服务器返回了一个错误状态码
-                    print("Server returned an error response.")
+                    print("Server returned an error")
                 }
-            })
-
+            }
+            
             task.resume()
         }
         
@@ -189,7 +184,7 @@ struct VideoPicker: UIViewControllerRepresentable {
                         
                         DispatchQueue.main.async {
                             self.parent.videoURL = newURL
-                            self.uploadVideoToServer(videoURL: newURL)
+                            self.uploadFileToServer(videoURL: newURL)
                         }
                     } catch {
                         print("Could not copy file to disk: \(error.localizedDescription)")
