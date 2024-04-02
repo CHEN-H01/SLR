@@ -116,7 +116,10 @@ struct VideoPicker: UIViewControllerRepresentable {
         init(_ parent: VideoPicker) {
             self.parent = parent
         }
-        func uploadVideoToServer(videoURL: URL, uploadURL: URL) -> string {
+        
+        func uploadVideoToServer(videoURL: URL) {
+            let uploadURL = URL(string: "http://169.254.38.232:8000/file_upload/upload/")!
+            
             // 创建请求
             var request = URLRequest(url: uploadURL)
             request.httpMethod = "POST"
@@ -124,7 +127,7 @@ struct VideoPicker: UIViewControllerRepresentable {
             // 设置请求头，这里的boundary是请求分隔符，用于区分不同的数据部分
             let boundary = "Boundary-\(UUID().uuidString)"
             request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-            
+
             // 创建multipart请求体
             var body = Data()
             
@@ -144,27 +147,26 @@ struct VideoPicker: UIViewControllerRepresentable {
             // 设置请求体
             request.httpBody = body
             
-            // 使用URLSession发起请求
-            let session = URLSession.shared
-            let task = session.dataTask(with: request) { data, response, error in
+            // 使用URLSession上传任务上传文件
+            let task = URLSession.shared.uploadTask(with: request, fromFile: videoURL, completionHandler: { data, response, error in
+                // 处理上传完成后的逻辑，例如错误处理、解析服务器响应等
                 if let error = error {
-                    // 处理上传失败
-                    print("Upload failed: \(error.localizedDescription)")
+                    print("Upload error: \(error.localizedDescription)")
                     return
                 }
-                
+
                 if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
-                    // 上传成功
-                    return "Successfully"
+                    // 成功上传
+                    print("Video successfully uploaded.")
                 } else {
-                    // 服务器返回错误状态码
-                    return "ServerError"
+                    // 服务器返回了一个错误状态码
+                    print("Server returned an error response.")
                 }
-            }
-    
+            })
+
             task.resume()
         }
-
+        
         func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
             picker.dismiss(animated: true)
 
@@ -187,16 +189,14 @@ struct VideoPicker: UIViewControllerRepresentable {
                         
                         DispatchQueue.main.async {
                             self.parent.videoURL = newURL
+                            self.uploadVideoToServer(videoURL: newURL)
                         }
                     } catch {
                         print("Could not copy file to disk: \(error.localizedDescription)")
                     }
                 }
             }
-            let uploadURL = URL(string: "http://127.0.0.1/file_upload/upload/")
-            let message = uploadVideoToServer(videoURL,uploadURL)
         }
-        
     }
 }
 
