@@ -124,7 +124,7 @@ struct VideoPicker: UIViewControllerRepresentable {
             if itemProvider.hasItemConformingToTypeIdentifier(UTType.movie.identifier) {
                 itemProvider.loadFileRepresentation(forTypeIdentifier: UTType.movie.identifier) { (url, error) in
                     guard let url = url, error == nil else { return }
-
+                    print(url)
                     // 创建一个新的URL，因为原始的URL可能是临时的
                     let fileManager = FileManager.default
                     let newURL = fileManager.temporaryDirectory.appendingPathComponent(url.lastPathComponent)
