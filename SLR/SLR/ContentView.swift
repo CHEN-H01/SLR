@@ -9,6 +9,7 @@ import UIKit
 import Photos
 import AVKit
 
+
 struct VideoCaptureView: UIViewControllerRepresentable {
     @Binding var isPresented: Bool
 
@@ -116,9 +117,10 @@ struct VideoPicker: UIViewControllerRepresentable {
         init(_ parent: VideoPicker) {
             self.parent = parent
         }
-        
-        func uploadFileToServer(fileURL: URL, uploadURL: URL) {
+    
+        func uploadFileToServer(fileURL: URL) {
             // 创建请求
+            let uploadURL = URL(string: "http://192.168.2.102:8000/file_upload/upload/")!
             var request = URLRequest(url: uploadURL)
             request.httpMethod = "POST"
             
@@ -161,7 +163,9 @@ struct VideoPicker: UIViewControllerRepresentable {
             
             task.resume()
         }
-        
+
+
+
         func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
             picker.dismiss(animated: true)
 
@@ -170,7 +174,7 @@ struct VideoPicker: UIViewControllerRepresentable {
             if itemProvider.hasItemConformingToTypeIdentifier(UTType.movie.identifier) {
                 itemProvider.loadFileRepresentation(forTypeIdentifier: UTType.movie.identifier) { (url, error) in
                     guard let url = url, error == nil else { return }
-                    print(url)
+
                     // 创建一个新的URL，因为原始的URL可能是临时的
                     let fileManager = FileManager.default
                     let newURL = fileManager.temporaryDirectory.appendingPathComponent(url.lastPathComponent)
@@ -184,7 +188,7 @@ struct VideoPicker: UIViewControllerRepresentable {
                         
                         DispatchQueue.main.async {
                             self.parent.videoURL = newURL
-                            self.uploadFileToServer(videoURL: newURL)
+                            self.uploadFileToServer(fileURL: newURL)
                         }
                     } catch {
                         print("Could not copy file to disk: \(error.localizedDescription)")
